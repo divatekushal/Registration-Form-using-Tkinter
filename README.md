@@ -19,6 +19,3 @@ This is a simple GUI application built using Tkinter in Python that allows stude
 4. Fill out the registration form with your details.
 5. Click on the "Submit" button.
 6. If all the entered data is valid, a PDF file containing the information will be generated in the same directory.
-
-## Screenshots
-[Include screenshots of your application in action if possible]
