@@ -1,5 +1,5 @@
 # Student Registration Form with PDF Generator
-![output image](stud_reg_frm_image.png)
+![output image](output.png)
 
 
 This is a simple GUI application built using Tkinter in Python that allows students to fill out their registration information, validate the input, and generate a PDF document containing the information provided.
