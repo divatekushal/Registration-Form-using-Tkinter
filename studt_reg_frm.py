@@ -2,6 +2,11 @@ import tkinter as tk
 import re
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
+import customtkinter
+from PIL import ImageTk, Image
+
+customtkinter.set_appearance_mode("System")  # Modes: system (default), light, dark
+customtkinter.set_default_color_theme("green")  # Themes: blue (default), dark-blue, green
 
 def clear_entry():
     Name_entry.delete(0, tk.END)
@@ -29,9 +34,9 @@ def pdf_generate(Name,AICTE_id,Email,Phone_No,Collage_Name):
         pdf.drawString(180,y,f": {value}")
         y-=20
     pdf.save()
-    error.config(text=f"PDF generated successfully : {pdf_name}",fg="blue")
+    error.configure(text=f"PDF generated successfully : {pdf_name}",text_color="blue")
+    error.place(x=10, y=300)
     clear_entry()
-    
     
 def submit():
     Name = Name_entry.get()
@@ -40,61 +45,100 @@ def submit():
     Phone_No = no_entry.get()
     Collage_Name = clg_entry.get()
     
-    error.config(text="")
+    error.configure(text="")
     if not Name or Name.strip() == '':
-        error.config(text="Please enter your name.")
+        error.configure(text="Please enter your name.")
+        error.place(x=115, y=300)
         return
     if not re.match(r'^[a-zA-Z\s]+$', Name):
-        error.config(text="Name can only contain alphabetic characters.")
+        error.configure(text="Name can only contain alphabetic characters.")
+        error.place(x=15, y=300)
         return
     if not AICTE_id:
-        error.config(text="Please enter your AICTE ID.")  
+        error.configure(text="Please enter your AICTE ID.") 
+        error.place(x=115, y=300) 
         return  
     if not Email:
-        error.config(text="Please enter your email address.")
+        error.configure(text="Please enter your email address.")
+        error.place(x=115, y=300)
         return
     if not re.match(r'^[\w\.-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$', Email):
-        error.config(text="Please enter a valid email address.")
+        error.configure(text="Please enter a valid email address.")
+        error.place(x=115, y=300)
         return
     if not Phone_No:
-        error.config(text="Please enter your phone number.") 
+        error.configure(text="Please enter your phone number.") 
+        error.place(x=115, y=300)
         return   
     if not Phone_No.isdigit():
-        error.config(text="Phone number must contain only digits.")
+        error.configure(text="Phone number must contain only digits.")
+        error.place(x=20, y=300)
         return
     if len(Phone_No) != 10:
-        error.config(text="Phone number must be 10 digits long.")
+        error.configure(text="Phone number must be 10 digits long.")
+        error.place(x=20, y=300)
         return
     if not Collage_Name:
-        error.config(text="Please enter your college name.") 
+        error.configure(text="Please enter your college name.") 
+        error.place(x=115, y=300)
         return  
-    pdf_generate(Name,AICTE_id,Email,Phone_No,Collage_Name)  
+    pdf_generate(Name,AICTE_id,Email,Phone_No,Collage_Name) 
 
-root = tk.Tk()
-root.title("Registration Form")
-title_label = tk.Label(root, text="Student Registration Form", font=("Helvetica", 20, "bold"), bg="sky blue", fg="white")
-title_label.grid(row=0, columnspan=2, pady=10, sticky="ew")
 
-labels = ["Name               :", "AICTE Id         :", "Email                :", "Phone No        :", "College Name :"]
-for i, label_text in enumerate(labels, start=1):
-    label = tk.Label(root, text=label_text, width=12, anchor="e",font=("Helvetica", 14))
-    label.grid(row=i, column=0, padx=(10, 5), pady=5)
-    entry = tk.Entry(root, width=30,font=("Helvetica", 14))
-    entry.grid(row=i, column=1, padx=(0, 10), pady=5)
-    if i == 1:
-        Name_entry = entry
-    elif i == 2:
-        aicte_entry = entry
-    elif i == 3:
-        email_entry = entry
-    elif i == 4:
-        no_entry = entry
-    elif i == 5:
-        clg_entry = entry
-        
-error = tk.Label(root, text="", fg="red") 
-error.grid(row=len(labels)+1, columnspan=2, padx=5, pady=5)     
+app = customtkinter.CTk()  # creating custom tkinter window
+app.geometry("600x440")
+app.title('Registration Form')
 
-submit_button = tk.Button(root, text="Submit", command=submit, bg="blue", fg="white", font=("Helvetica", 14, "bold"))
-submit_button.grid(row=len(labels)+2, columnspan=2, pady=10, sticky="ew")
-root.mainloop()
+img1 = ImageTk.PhotoImage(Image.open("pattern.png"))
+l1 = customtkinter.CTkLabel(master=app, image=img1)
+l1.pack()
+
+# creating custom frame
+frame = customtkinter.CTkFrame(master=l1, width=340, height=360, corner_radius=15)
+frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+
+l2 = customtkinter.CTkLabel(master=frame, text="Student Registration Form", font=('Century Gothic', 25))
+l2.place(x=20, y=20)
+
+# Label and Entry for Name
+l3 = customtkinter.CTkLabel(master=frame, text="Name                :", font=('Century Gothic', 12))
+l3.place(x=10, y=80)
+Name_entry = customtkinter.CTkEntry(master=frame, width=220, placeholder_text='Enter your name')
+Name_entry.place(x=105, y=80)
+
+# Label and Entry for AICTE ID
+l4 = customtkinter.CTkLabel(master=frame, text="AICTE ID            :", font=('Century Gothic', 12))
+l4.place(x=10, y=115)
+aicte_entry = customtkinter.CTkEntry(master=frame, width=220, placeholder_text='Enter your AICTE ID')
+aicte_entry.place(x=105, y=115)
+
+# Label and Entry for Phone No
+l5 = customtkinter.CTkLabel(master=frame, text="Email                  :", font=('Century Gothic', 12))
+l5.place(x=10, y=150)
+email_entry = customtkinter.CTkEntry(master=frame, width=220, placeholder_text='Enter your email')
+email_entry.place(x=105, y=150)
+
+# Label and Entry for Email
+l6 = customtkinter.CTkLabel(master=frame, text="Phone No         ", font=('Century Gothic', 12))
+l6.place(x=10, y=185)
+no_entry = customtkinter.CTkEntry(master=frame, width=220, placeholder_text='Enter your phone number')
+no_entry.place(x=105, y=185)
+
+# Label and Entry for College Name
+l7 = customtkinter.CTkLabel(master=frame, text="College Name :", font=('Century Gothic', 12))
+l7.place(x=10, y=220)
+clg_entry = customtkinter.CTkEntry(master=frame, width=220, placeholder_text='Enter your college name')
+clg_entry.place(x=105, y=220)
+
+# Create custom button
+button1 = customtkinter.CTkButton(master=frame, width=215, text="Save", command=submit, corner_radius=6)
+button1.place(x=110, y=270)
+button2 = customtkinter.CTkButton(master=frame, width=90, text="Clear", command=clear_entry, corner_radius=6)
+button2.place(x=10, y=270)
+
+error = customtkinter.CTkLabel(master=frame, text="", font=('Century Gothic', 13),text_color="red")
+error.place(x=115, y=300)
+
+# You can easily integrate authentication system
+
+app.mainloop()
